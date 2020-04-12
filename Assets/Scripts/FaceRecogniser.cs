@@ -1,3 +1,4 @@
+using System.Text;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -32,15 +33,26 @@ public class FaceRecogniser : MonoBehaviour
 		}
 	}
 
-	class EyesAboveZ : FaceFeature
+	class TransfromsAboveZ : FaceFeature
 	{
-		private Collider _collider;
-		private string _name;
+		bool _above;
+		Collider _collider;
+		string _name;
+		Transform[] _transfroms;
 
-		public EyesAboveZ(FaceRecogniser p, string name, Collider c) : base(p) 
+		public TransfromsAboveZ(
+			FaceRecogniser p, 
+			string name, 
+			Collider c, 
+			Transform[] transforms, 
+			float score, 
+			bool above = true
+		) : base(p)
 		{
 			_collider = c;
 			_name = name;
+			_transfroms = transforms;
+			_above = above;
 		}
 
 		public override float CalcScore()
@@ -51,25 +63,22 @@ public class FaceRecogniser : MonoBehaviour
 			}
 
 			float result = 0;
-			
-			if(Parent.leftEye.transform.position.z > ColiderZ())
+
+			StringBuilder stringBuilder = new StringBuilder();
+
+			stringBuilder.Append((_above ? "Above " : "Below ") + _name);
+			for(int i = 0; i < _transfroms.Length; i++)
 			{
-				result += Parent.eyesAboveNoseScore / 2;
+				bool cond = _above && _transfroms[i].position.z > ColiderZ() || !_above && _transfroms[i].position.z < ColiderZ();
+				if(cond)
+				{
+					result += Parent.eyesAboveNoseScore / _transfroms.Length;
+				}
+				
+				stringBuilder.Append(string.Format(" transform {0} result {1} pos {2} target {3}", i, cond, _transfroms[i].position.z, ColiderZ()));
 			}
 
-			if(Parent.rightEye.transform.position.z > ColiderZ())
-			{
-				result += Parent.eyesAboveNoseScore / 2;
-			}
-
-			Debug.Log(
-				string.Format(
-					"Above {2} LeftEye {0}, RightEye {1}",
-					Parent.leftEye.transform.position.z > ColiderZ(),
-					Parent.rightEye.transform.position.z > ColiderZ(),
-					_name
-				)
-			);
+			Debug.Log(stringBuilder.ToString());
 
 			return result;
 		}
@@ -81,6 +90,9 @@ public class FaceRecogniser : MonoBehaviour
 
 	public float eyeDistanceScore = 100;
 	public float eyesAboveNoseScore = 100;
+	public float eyesAboveLips = 50;
+	public float lipsBelowNose = 50;
+
 	public GameObject nose;
 	public GameObject lips;
 	public GameObject rightEye;
@@ -90,9 +102,43 @@ public class FaceRecogniser : MonoBehaviour
 	{
 		_faceFeatures = new List<FaceFeature>()
 		{
-			new EyesAboveZ(this, "Nose", nose.GetComponent<Collider>()),
-			new EyesAboveZ(this, "Lips", lips.GetComponent<Collider>()),
-			new EyeDistance(this)
+			new TransfromsAboveZ
+			(
+				this, 
+				"Eyes Nose", 
+				nose.GetComponent<Collider>(),
+				new Transform[]
+				{
+					rightEye.transform,
+					leftEye.transform
+				},
+				eyesAboveNoseScore
+			),
+			new TransfromsAboveZ
+			(
+				this,
+				"Eyes Lips",
+				lips.GetComponent<Collider>(),
+				new Transform[]
+				{
+					rightEye.transform,
+					leftEye.transform
+				},
+				eyesAboveLips
+			),
+			new TransfromsAboveZ
+			(
+				this,
+				"Lips Nose",
+				nose.GetComponent<Collider>(),
+				new Transform[]
+				{
+					lips.transform
+				},
+				lipsBelowNose,
+				false
+			),
+			new EyeDistance(this),
 		};
 
 		_idealEyeDistance = Vector3.Distance(leftEye.transform.position, rightEye.transform.position);
