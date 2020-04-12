@@ -9,6 +9,8 @@ TagManager:
   - Face
   - FaceDamaingElement
   - GameManger
+  - Background
+  - Dude
   layers:
   - Default
   - TransparentFX

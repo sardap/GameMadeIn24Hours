@@ -9,6 +9,7 @@ public class AreaSpawner : MonoBehaviour
 	public GameObject toCreate;
 	public int spawnRateMin = 5;
 	public int spawnRateMax = 25;
+	public int spawnHeight = 20;
 	public Collider colider;
 
 	void Start()
@@ -32,7 +33,7 @@ public class AreaSpawner : MonoBehaviour
 	{
 		Vector3 spawn = new Vector3(
 			Random.Range(colider.bounds.min.x, colider.bounds.max.x),
-			Random.Range(20, 20),
+			spawnHeight,
 			Random.Range(colider.bounds.min.z, colider.bounds.max.z)
 		);
 		GameObject newObject = Instantiate(toCreate, spawn, toCreate.transform.rotation);

@@ -7,4 +7,7 @@ public static class CustomTags
 	public static string FaceDamagingElement = "FaceDamaingElement";
 	public static string Player = "Player";
 	public static string GameManger = "GameManger";
+	public static string Background = "Background";
+	public static string Dude = "Dude";
+	public static string MainCamera = "MainCamera";
 }

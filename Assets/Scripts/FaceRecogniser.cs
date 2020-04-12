@@ -144,7 +144,7 @@ public class FaceRecogniser : MonoBehaviour
 		_idealEyeDistance = Vector3.Distance(leftEye.transform.position, rightEye.transform.position);
 	}
 	
-	public float CalcScore()
+	public Score.ScoreEntry CalcScore()
 	{
 		float score = 0f;
 
@@ -153,6 +153,6 @@ public class FaceRecogniser : MonoBehaviour
 			score += _faceFeatures[i].CalcScore();
 		}
 
-		return score;
+		return new Score.ScoreEntry(){Value = score, Text = ""};
 	}
 }
