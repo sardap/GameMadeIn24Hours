@@ -17,7 +17,7 @@ public class FaceGameManger : MonoBehaviour
 
 		public void OnNotify()
 		{
-			if(_parent.playerLife.CurrentHealth < 0)
+			if(_parent.playerLife.CurrentHealth < 0 && !_parent.Invincible)
 			{
 				Debug.Log(string.Format("Player died"));
 				_parent.GameOver();
@@ -44,11 +44,14 @@ public class FaceGameManger : MonoBehaviour
 		}
 	}
 
+	float _updateScoreIn;
 	LifeObvs _lifeObvs;
 	GameCountDownObvs _countDownObvs;
-
+	
+	public FaceRecogniser faceRecogniser;
 	public LifeAmount playerLife;
 	public GameCountDown gameTimeCountDown;
+	public bool Invincible = false;
 
     // Start is called before the first frame update
     void Start()
@@ -63,6 +66,11 @@ public class FaceGameManger : MonoBehaviour
 			gameTimeCountDown = GetComponent<GameCountDown>();
 		}
 
+		if(faceRecogniser == null)
+		{
+			faceRecogniser = GetComponent<FaceRecogniser>();
+		}
+
 		_countDownObvs = new GameCountDownObvs(this);
 		_lifeObvs = new LifeObvs(this);
 		playerLife.Subject.AddObvs(_lifeObvs);
@@ -73,6 +81,16 @@ public class FaceGameManger : MonoBehaviour
 	{
 		playerLife.Subject.RemoveObvs(_lifeObvs);
 		gameTimeCountDown.Subject.AddObvs(_countDownObvs);
+	}
+
+	void Update()
+	{
+		_updateScoreIn -= Time.deltaTime;
+		if(_updateScoreIn <= 0)
+		{
+			Debug.Log(string.Format("Score {0}", faceRecogniser.CalcScore()));
+			_updateScoreIn = 5;
+		}
 	}
 
 	public void GameSuccess()

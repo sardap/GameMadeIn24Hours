@@ -539,6 +539,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 520698396}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &652453131 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2350491864995998827, guid: 25915a6da3983c440aa1aa91f0cbd604,
+    type: 3}
+  m_PrefabInstance: {fileID: 520698396}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &697639941 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2350491864995998827, guid: 25915a6da3983c440aa1aa91f0cbd604,
+    type: 3}
+  m_PrefabInstance: {fileID: 1851231124}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -859,8 +871,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1122146605}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.78, z: -1.43}
-  m_LocalScale: {x: 2, y: 3, z: -1.6024}
+  m_LocalPosition: {x: 0, y: 0.18, z: -1.43}
+  m_LocalScale: {x: 1.47508, y: 3, z: -1.6024}
   m_Children: []
   m_Father: {fileID: 1556936726}
   m_RootOrder: 3
@@ -1027,7 +1039,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b976bbd4e2d5e614a90876f0962af71a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lifeAmount: {fileID: 0}
 --- !u!1 &1261609064
 GameObject:
   m_ObjectHideFlags: 0
@@ -1651,6 +1662,7 @@ GameObject:
   - component: {fileID: 2065480591}
   - component: {fileID: 2065480592}
   - component: {fileID: 2065480593}
+  - component: {fileID: 2065480594}
   m_Layer: 0
   m_Name: GameManger
   m_TagString: GameManger
@@ -1699,5 +1711,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 271c2a8d189316f41957e1ec6a4e2b78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  faceRecogniser: {fileID: 0}
   playerLife: {fileID: 0}
   gameTimeCountDown: {fileID: 0}
+  Invincible: 1
+--- !u!114 &2065480594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2065480590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bc081d407d4a194ba5e090a75f5cdf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eyeDistanceScore: 300
+  eyesAboveNoseScore: 100
+  nose: {fileID: 1122146605}
+  lips: {fileID: 2030362734}
+  rightEye: {fileID: 697639941}
+  leftEye: {fileID: 652453131}
